@@ -31,7 +31,7 @@ if ($result->num_rows > 0)
     {
         $record_no = $row["RD_NO"];
         $alert_table .= '<tr>'.
-            '<td>'.$row["RD_NO"].'</td>'.
+			'<td><a href="view_accident.php?editrdno='.$row["RD_NO"].'">'.$row["RD_NO"].'</a></td>'.
             '<td>'.$row["COMMUNITY_AREA"].'</td>'.
             '<td>'.$row["CRASH_DATE"].'</td>'.
             '<td>'.$row["WEATHER"].'</td>'.
