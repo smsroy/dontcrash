@@ -30,12 +30,13 @@
         }
 
     	$loginlink = '<li>'.$_SESSION["username"].'&nbsp'.
-    	    '<a href="accident_alerts.php">
-    	        <i class="fas fa-envelope"></i></a>
-    	    <span class="badge" id="'.$badge_id.'">'.$rows.'</span>'.
+    	    '<a href="accident_alerts.php" class="fas fa-envelope">
+    	    <label class="badge" id="'.$badge_id.'">'.$rows.'</label></a>'.
     	    '<a href="logout.php" class="button special">Logout</a>
             </li>';
     }
+    // $result->free();
+    // $conn->close();
 ?>
 
 
@@ -64,8 +65,8 @@
 		<ul>
 			<li><a href="index.php">Home</a></li>
 			<li><a href="accidents_search.php">Accident Search</a></li>
-			<li><a href="vehicles.php">Vehicles</a></li>
-			<li><a href="people.php">People</a></li>
+			<li><a href="routefinder.php">Route Finder</a></li>
+			<li><a href="accident_predict">Predictability</a></li>
 			<li><a href="user_profile.php">User Profile</a></li>
 			<?php echo $loginlink; ?>
 		</ul>

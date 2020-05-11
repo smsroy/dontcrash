@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer id="footer">
+<footer id="footer" class="footer">
 	<div class="container">
 		<div class="row">
 			<div class="8u 12u$(medium)">

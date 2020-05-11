@@ -4,6 +4,11 @@ require 'connection.php';
 
 $GLOBALS['CURRENT_PAGE'] = "Accident Listing";
 
+if(!isset($_SESSION))
+{
+	session_start();
+}
+
 // Define variables and initialize with empty values
 $rdno = $location = $dateFrom = $dateTo = $weather = $lighting = $primcause = $seccause = $dayofweek = $month = $hour = $injuriesfatal = "";
 $no_of_params = 0;

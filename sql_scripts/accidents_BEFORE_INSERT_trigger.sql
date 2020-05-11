@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` TRIGGER `development1`.`accidents_BEFORE_INSERT` BEFORE INSERT ON development1.accidents FOR EACH ROW
+CREATE DEFINER=`root`@`localhost` TRIGGER `dontcrash_db`.`accidents_BEFORE_INSERT` BEFORE INSERT ON dontcrash_db.accidents FOR EACH ROW
 BEGIN
     DECLARE rdno_new varchar(50);
    

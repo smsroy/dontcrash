@@ -1,9 +1,6 @@
 # DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
-PassengerAppRoot "/home/dontcrash/routefinderassets"
+PassengerAppRoot "/home/dontcrash/route"
 PassengerBaseURI "/route"
-PassengerPython "/home/dontcrash/virtualenv/routefinderassets/3.5/bin/python"
+PassengerPython "/home/dontcrash/virtualenv/route/3.5/bin/python"
+PassengerAppLogFile "/home/dontcrash/route/logs"
 # DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
-# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
-<IfModule Litespeed>
-</IfModule>
-# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END

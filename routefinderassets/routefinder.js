@@ -5,25 +5,8 @@ var directionsRenderer;
 var map;
 var geocoder;
 var markers = [];
-/*if((sessionStorage.getItem("savedRouteParams") == null)){
-    sessionStorage.setItem("savedRouteParams", routeParams);
-}*/
 
-//savedRouteParams = sessionStorage.getItem("savedRouteParams");
-
-/*function initMap() {
-  directionsService = new google.maps.DirectionsService();
-  directionsRenderer = new google.maps.DirectionsRenderer();
-  var center = new google.maps.LatLng( 41.8781, -87.6298); 
-  //var oceanBeach = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
-  var mapOptions = {
-    zoom: 8,
-    center: center
-  }
-  var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-  directionsRenderer.setMap(map);
-} */
-
+// Initializes map display
 function initMap() {
   var chicago = new google.maps.LatLng( 41.8781, -87.6298); 
   map = new google.maps.Map(document.getElementById('map'), {
@@ -62,7 +45,6 @@ function AutocompleteDirectionsHandler(map) {
   destinationAutocomplete.setFields(['place_id']);
 
   this.setupClickListener('changemode-walking', 'WALKING');
-  //this.setupClickListener('changemode-transit', 'TRANSIT');
   this.setupClickListener('changemode-driving', 'DRIVING');
 
   this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
@@ -130,14 +112,11 @@ AutocompleteDirectionsHandler.prototype.route = function() {
       });
 };
 
-function getStreetName(){
-    var geocoder = new google.maps.Geocoder;
-}
-
+// Determines which lats, longs, street names to use when searching the database for accidents near the route shown
 function getNearbyAccidents(response){
     console.log(JSON.stringify(response.routes[0].legs[0].steps));
     var steps = response.routes[0].legs[0].steps;
-    //var path = response.routes[0].legs[0].steps[i];
+
     var i;
     var j;
     var startLats = [];
@@ -152,10 +131,6 @@ function getNearbyAccidents(response){
         
         try{
             var instructions = JSON.stringify(response.routes[0].legs[0].steps[i].instructions);
-            /*if("Turn" == instructions.substring(1,5) || "Head"==instructions.substring(1,5) || "Slight"==instructions.substring(1,7) || "Take exit" == instructions.substring(1,10)){
-                streetName = instructions.split('<b>')[2].split('</b>')[0].split('<div>')[0].split(' ');
-            }
-            else */
             if("Merge" == instructions.substring(1,6) || "Take" == instructions.substring(1,5) || "Continue" == instructions.substring(1,8)){
                 streetName = instructions.split('<b>')[1].split('</b>')[0].split('<div>')[0].split(' ');
             }
@@ -211,6 +186,7 @@ function getNearbyAccidents(response){
     getFromDB(startLats,startLongs,endLats,endLongs,streetNames);
 }
 
+// Gets the streetname from google map direction query
 function getStreetSpec(street){
     var streetName;
     if(street[0].length == 1){
@@ -227,39 +203,12 @@ function getStreetSpec(street){
     }
     return streetName;
 }
-        
-        //for(j = 0; j < Object.keys(response.routes[0].legs[0].steps[i].path).length; j++){
-            /*var lat = parseFloat(JSON.stringify(response.routes[0].legs[0].steps[i].path[j].lat())).toFixed(3);
-            var long = parseFloat(JSON.stringify(response.routes[0].legs[0].steps[i].path[j].lng())).toFixed(3);
-            
-            console.log("STEPS-"+i+" PATH-"+j+" :"+" LAT- "+lat+" LONG- "+long);
-            console.log("Path arr length: "+Object.keys(response.routes[0].legs[0].steps[i].path).length);
-            
-            var latIndex = lats.indexOf(lat)
-            var longIndex = longs.indexOf(long);
-            
-            var search;
-            var found = false;*/
-            //if the lat and long does not already exist in array, then add
-            /*for(search = 0; search < lats.length; search++){
-                if((lats[search] == lat) && (longs[search] == long)){
-                    found = true;
-                }
-            }
-            
-            if(!found){
-                lats.push(lat);
-                longs.push(long);
-            }*/
-            
-        //}
-    //}
 
-    
+// Gets the accidents near the route shown        
 function getFromDB(startLats,startLongs,endLats,endLongs,streetNames){
      jQuery.ajax({
                 type: "POST",
-                url: 'http://dontcrash.web.illinois.edu/routefinderassets/route_getaccidentsinfo.php',
+                url: '/routefinderassets/route_getaccidentsinfo.php',
                 dataType: 'json',
                 data: {
                     start_lats: startLats,
@@ -269,45 +218,68 @@ function getFromDB(startLats,startLongs,endLats,endLongs,streetNames){
                     streets: streetNames
                 },
                 success: function (obj) {
-                  //if( !('error' in obj) ) {
-                     // yourVariable = obj.result;
                       console.log(JSON.stringify(obj));
                       setMarkers(obj,startLats,startLongs,endLats,endLongs);
-                 // }
-                  //else {
-                   //   console.log(obj.error);
-                  //}
                 }
             });
 }
 
-function setMapOnAll(map) {
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(map);
-        }
-        markers = [];
-      }
-
+// Markers displayed on map that are clickable and provide info on number of accidents near the location   
 function setMarkers(JSONObj,startLats,startLongs,endLats,endLongs){
+    // Clear out the old markers.
+    markers.forEach(function(marker) {
+        marker.setMap(null);
+    });   
+    infoWindow = new google.maps.InfoWindow(); 
+    
     console.log("Length of markers arr: "+Object.keys(JSONObj).length);
-    //console.log("First marker "+JSONObj[0][0].latitude);
     var i;
     var j;
+    lats = [];
+    longs = [];
 
-    
     for(i = 0; i < Object.keys(JSONObj).length; i++){
-        //for(j = 0; j < Object.keys(JSONObj[i]).length; j++){
-            //var lat = parseFloat(JSONObj[i][j].latitude);
-            //var long = parseFloat(JSONObj[i][j].longitude);
             if(Object.keys(JSONObj[i]).length == 0){
                 continue;
             }
             
+            var low = 0.0;
+            var medium = 0.0;
+            var critical = 0.0;
+            for(j = 0; j < Object.keys(JSONObj[i]).length; j++){
+                severity = JSONObj[i][j].severity;
+                switch(severity) {
+                    case "LOW":
+                        low++;
+                        break;
+                    case "MEDIUM":
+                        medium++;
+                        break;
+                    case "CRITICAL":
+                        critical++;
+                        break;
+                }
+                //console.log(JSON.stringify(JSONObj[i][j].severity));
+            } 
+            
+            //ratio of accidents severity from total number of accidents nearby
+            var total = low+medium+critical;
+            var lowRatio = Math.round(low/total * 100);
+            var mediumRatio = Math.round(medium/total * 100);
+            var criticalRatio = Math.round(critical/total * 100);
+            
+            var contentString = "<h4>Nearby Accident Severity Ratio</h4><p><b>LOW:</b> "+lowRatio.toString()+"%</br><b>MEDIUM:</b> "+mediumRatio.toString()+"%</br><b>CRITICAL:</b> "+criticalRatio.toString()+"%</p>";
+             
             //get middle point between start and end lats & longs
             var lat = (startLats[i] - endLats[i])/2 + endLats[i];
             var long = (startLongs[i] - endLongs[i])/2 + endLongs[i];
             var label = (Object.keys(JSONObj[i]).length).toString();
-            markers.push(new google.maps.Marker({position: {lat: lat, lng: long},
+            
+            // Arrays for predicting accident type in machine learning log reg model
+            lats.push(lat);
+            longs.push(long);  
+           
+            var markerTemp = new google.maps.Marker({position: {lat: lat, lng: long},
                                         map: map,
                                         label: {text: label, color: '#FFFFFF'},
                                         icon: {
@@ -317,63 +289,82 @@ function setMarkers(JSONObj,startLats,startLongs,endLats,endLongs){
                                             fillOpacity: 1,
                                             strokeWeight: 0.6,
                                             strokeColor: '#FFFFFF'
-                                        }}));
-            //markers.push(marker);
-        //}
+                                        }
+                                        });
+
+            markerTemp.contentString = contentString;
+
+            google.maps.event.addListener(markerTemp, 'click', function() {
+                infoWindow.close();
+                infoWindow = new google.maps.InfoWindow();
+                infoWindow.setContent(this.contentString);
+                infoWindow.open(map, this);
+            });
+
+            markers.push(markerTemp);
     }
     
-    //setMapOnAll(map);
+    getLogReg(lats,longs);
+    console.log("Lats and Longs: "+lats.toString());
    
-    //new google.maps.Marker({position: {lat: JSONObj.latitude, lng: JSONObj.longitude}, map: map});
 } 
 
-/*function getStreetName(lat,long) {
-    geocoder.geocode( {lat: lat, lng: long}, function(results, status) {
-      if (status == 'OK') {
-        console.log(JSON.stringify(results);
-  
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }*/
-    
-    /*String response = getResponseFromGoogleMaps(); //this function will fetch the response. write it in your way
-ArrayList<Bundle> list = new ArrayList<Bundle>();
-try {
-        JSONObject json = new JSONObject(response);
-        JSONArray routes = json.getJSONArray("route");
-        JSONArray legs = routes.getJSONArray(0);
-        JSONArray steps = legs.getJSONArray(0);
-        for(int i=0;i<steps.length();i++) {
-            JSONObject singleStep = steps.getJSONObject(i);
-            JSONObject duration = singleStep.getJSONObject("duration");
-            Bundle dur = new Bundle();
-            dur.putString("text", duration.getString("text"));
-            dur.putString("value", duration.getString("value"));
-            JSONObject distance = singleStep.getJSONObject("distance");
-            Bundle dis = new Bundle();
-            dis.putString("text", distance.getString("text"));
-            dis.putString("value", distance.getString("value"));
-            Bundle data = new Bundle();
-            data.putBundle("duration", dur);
-            data.putBundle("distance", dis);
-            list.add(data);
+// Get the logistic regression model prediction for the lat and long values near the pathway given by google maps
+function getLogReg(latsArr,longsArr){
+    jQuery.ajax({
+        type: "POST",
+        url: "https://dontcrash.web.illinois.edu/route/map",
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: JSON.stringify({ 
+           latlist: latsArr,
+           longlist: longsArr
+        }),
+        success: function (obj) {
+            var jsonAccidentTypes = obj
+            console.log("ML Accident Type Predictions: "+JSON.stringify(jsonAccidentTypes));
+            modMarkerPrediction(jsonAccidentTypes.result);
+            
+        },
+        error: function (jqXHR, exception) {
+            var msg = '';
+            if (jqXHR.status === 0) {
+                msg = 'Not connect.\n Verify Network.';
+            } else if (jqXHR.status == 404) {
+                msg = 'Requested page not found. [404]';
+            } else if (jqXHR.status == 500) {
+                msg = 'Internal Server Error [500].';
+            } else if (exception === 'parsererror') {
+                msg = 'Requested JSON parse failed.';
+            } else if (exception === 'timeout') {
+                msg = 'Time out error.';
+            } else if (exception === 'abort') {
+                msg = 'Ajax request aborted.';
+            } else {
+                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+            }
+            console.log(msg);
         }
-} catch (JSONException e1) {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-}*/
-//}
+    });
+}
 
-
-
-function saveRouteParams(){
-    startAddr = document.getElementById("start_addr").value;
-    sessionStorage.setItem("startAddr", startAddr);
-    endAddr = document.getElementById("end_addr").value;
-    sessionStorage.setItem("startAddr", startAddr);
+// Add machine learning logistic regression accident type prediction to each marker (each is clickable)
+function modMarkerPrediction(predictions){
+    count = 0;
+    infoWindow = new google.maps.InfoWindow(); 
+    markers.forEach(function(marker) {
+        var newContentString = '<h4>Most Probable Accident Type By Severity</h4><p><b>LOW: </b>'+predictions[count++]+'</br><b>MEDIUM: </b>'+predictions[count++]+'</br><b>CRITICAL: </b>'+predictions[count++]+'</p>'+marker.contentString
+        
+        marker.contentString = newContentString;
+        
+         google.maps.event.addListener(marker, 'click', function() {
+                infoWindow.close();
+                infoWindow = new google.maps.InfoWindow();
+                infoWindow.setContent(this.contentString);
+                infoWindow.open(map, this);
+            });
+    });
     
-    //getPlace(startAddr);
-    getRoute();
+    
+   
 }

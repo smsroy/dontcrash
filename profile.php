@@ -43,7 +43,6 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnDD1rNUQA_hXanSo4W6vXye8zw3Z0M7U&libraries=places&callback=initMap"
     type="text/javascript">initMap()</script>
     <!--script>initMap()</script-->
-    		<!-- Footer -->
-	<?php include "footer.php"; ?>
+
   </body>
 </html>

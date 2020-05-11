@@ -451,6 +451,7 @@ if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] !== true){
 	          </div>
 	        </div>
 	      </div>
+	      <br>
 				<div class="form-group">
 					<input type="submit" class="button medium" value="Report Accident">
 					<input type="reset" class="button medium" value="Reset">

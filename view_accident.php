@@ -212,7 +212,7 @@ $GLOBALS['CURRENT_PAGE'] = "View Accident";
       <h5>Contributing to Safer Roads in Chicago
 	  <div align="right"><a href="javascript:history.go(-1)"><b>Return to Accident Lists</b></a></div></h5>
 			
-	  <form action="#" method="post">
+	  <form action="accidents_search.php" method="post">
 
 	      <div class="accordion" id="accordionExample">
 	        <div class="card">

@@ -320,7 +320,7 @@ $result->free();
 $stmt->close();
 $conn->close();
 
-echo "<script>alert('Report added!' );location.href='https://dontcrash.web.illinois.edu/user_profile.php';</script>";
+echo "<script>alert('Report added!' );location.href='https://dontcrash.web.illinois.edu/profilexl.php';</script>";
 
 ?>
 				</div>

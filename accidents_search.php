@@ -1,13 +1,11 @@
 <?php
+$GLOBALS['CURRENT_PAGE'] = "Accident Search";
 
 if(!isset($_SESSION))
 {
 	session_start();
 }
-
-$GLOBALS['CURRENT_PAGE'] = "Accident Search";
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -21,7 +19,7 @@ $GLOBALS['CURRENT_PAGE'] = "Accident Search";
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
-		<script type="text/javascript" src="http://services.iperfect.net/js/IP_generalLib.js">
+		<script src="js/IP_generalLib.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>			
@@ -155,7 +153,12 @@ $injuries_fatal = $injuries_fatal.'</select>';
 
 		<!-- Main -->
 			<section id="main" class="wrapper">
-				<div class="container">							
+				<div class="container">
+					<div align="right"><a href="people.php">Accidents by People Type</a> 
+					&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="vehicles.php">Accidents by Vehicle Type</a>
+					</div>
+					<br/>					
 				<form action="accidents_list.php" method="post">
 <?php				
     if(!empty($_GET['error'])){
@@ -172,10 +175,10 @@ $injuries_fatal = $injuries_fatal.'</select>';
 					  <td><?php echo $location_select; ?></td>
 					</tr>
 					<tr>
-					  <td>Crash Date From:</td>
+					  <td>Date From (mm/dd/yyyy):</td>
 					  <td><input type="text" name="dateFrom" id="dateFrom" alt="date" class="IP_calendar" class="form-control" title="m/d/Y"></td>
 					  <td>&nbsp;</td>
-					  <td>Crash Date To:</td>
+					  <td>Date To (mm/dd/yyyy):</td>
 					  <td><input type="text" name="dateTo" id="dateTo" alt="date" class="IP_calendar" class="form-control" title="m/d/Y"></td>
 					</tr>
 					<tr>

@@ -43,7 +43,7 @@ if(!isset($_SESSION))
 				<p>In depth analysis of past traffic accidents in Chicago metropolitan area!</p>
 				<ul class="actions">
 					<li>
-						<a href="./accidents_search.php" class="button big">Accident Insights</a>
+						<a href="plotlyoption7.php" class="button big">Accident Insights</a>
 					</li>
 				</ul>
 			</section>
@@ -58,59 +58,31 @@ if(!isset($_SESSION))
 					<div class="row 150%">
 						<div class="4u 12u$(medium)">
 							<section class="box">
-								<a href="chart_display.php"><i class="icon big rounded color1 fa-cloud"></i></a>
-								<h3>Effects of Weather Conditions</h3>
-								<p>Analyse the relations between traffic crashes and weather conditions.</p>								
+								<a href="peoplev.php"><i class="icon big rounded color1 fa-desktop"></i></a>
+								<h3>Observation with People</h3>
+								<p>Analyse the relations between traffic crashes and people.</p>								
 
 							</section>
 						</div>
 						<div class="4u 12u$(medium)">
 							<section class="box">
-								<a href="chart_display.php"><i class="icon big rounded color9 fa-desktop"></i></a>
-								<h3>Effects of Lighting Conditions</h3>
-								<p>Analyse the relations between traffic crashes and lighting conditions.</p>
+								<a href="vehiclesv.php"><i class="icon big rounded color9 fa-rocket"></i></a>
+								<h3>Observation with Vehicles</h3>
+								<p>Analyse the relations between traffic crashes and vehicles.</p>
 							</section>
 						</div>
 						<div class="4u$ 12u$(medium)">
 							<section class="box">
-								<a href="chart_display.php"><i class="icon big rounded color6 fa-rocket"></i></a>
+								<a href="Otherfactors.php"><i class="icon big rounded color6 fa-cloud"></i></a>
 								<h3>Other causes of Crashes</h3>
 								<p>Analyse the relations between traffic crashes and the causes associated.</p>								
 							</section>
 						</div>
 					</div>
 				</div>
-			</section>
+			</section>	
 
-		<!-- Three -->
-			<section id="three" class="wrapper style3 special">
-				<div class="container">
-					<header class="major">
-						<h2>Contact us</h2>
-						<p>Please contact us filling the form below. Our team will get back to you in 24 hours!</p>
-					</header>
-				</div>
-				<div class="container 50%">
-					<form action="#" method="post">
-						<div class="row uniform">
-							<div class="6u 12u$(small)">
-								<input name="name" id="name" value="" placeholder="Name" type="text">
-							</div>
-							<div class="6u$ 12u$(small)">
-								<input name="email" id="email" value="" placeholder="Email" type="email">
-							</div>
-							<div class="12u$">
-								<textarea name="message" id="message" placeholder="Message" rows="6"></textarea>
-							</div>
-							<div class="12u$">
-								<ul class="actions">
-									<li><input value="Send Message" class="special big" type="submit"></li>
-								</ul>
-							</div>
-						</div>
-					</form>
-				</div>
-			</section>
+
 
 		<!-- Footer -->
 		<?php include "footer.php"; ?>

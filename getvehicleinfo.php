@@ -2,7 +2,7 @@
 require 'connection.php';
 $model = $_GET['model'];
 $result_array = array();
-$sql = "SELECT vid, maneuver, crash_date, first_contact_point, vehicle_type, vehicle_use, unit_type, vehicle_year FROM vehicles where model='".$model."'";
+$sql = "SELECT rd_no, maneuver, crash_date, first_contact_point, vehicle_type, vehicle_use, unit_type, vehicle_year FROM vehicles where model='".$model."'";
 $result = $conn->query($sql);
 
 

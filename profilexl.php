@@ -1,4 +1,18 @@
 <?php
+
+require 'connection.php';
+
+if(!isset($_SESSION))
+{
+	session_start();
+}
+
+if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] !== true)
+{
+    header("location: login.php");
+    exit;
+}
+
 $GLOBALS['CURRENT_PAGE'] = "User Profile";
 ?>
 <!DOCTYPE html>
@@ -23,52 +37,18 @@ $GLOBALS['CURRENT_PAGE'] = "User Profile";
       <link rel="stylesheet" href="css/style.css" />
       <link rel="stylesheet" href="css/style-xlarge.css" />
     </noscript>
-    <style>
-        .sidebar-sticky {
-            padding-top: 20px;
-            padding-left: 0px;
-        }
-    </style>
     </head>
   <body>
 
 	<!-- Header -->
 	<?php include "header.php"; ?>
 	
-
+  <main>
   <div class="container-fluid">
-    <div class="row">
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-        <div class="sidebar-sticky">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="profilexl.php">
-                Profile <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="report_form3.php">
-                Create Report <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="user_profile.php">
-                History Report
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Accidents Alert
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+        <!-- side bar -->
+        <?php include "sidebar.php"; ?>
 
-
-
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <h2 class="textformat">Profile</h2>
+      <div class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
         <div class="row textformat">
           <div class="column">
@@ -83,15 +63,15 @@ $GLOBALS['CURRENT_PAGE'] = "User Profile";
         <!--h2>Current Alerts</h2-->
         <div id="map"></div>
         
-<script src="jquery/jquery.js"></script>
+        <script src="jquery/jquery.js"></script>
         <!--"position:absolute;bottom:0px;height:50%;width:100%;"-->
         <script src="routefinderassets/profile.js" type="text/javascript"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnDD1rNUQA_hXanSo4W6vXye8zw3Z0M7U&libraries=places&callback=initMap"
         type="text/javascript">initMap()</script>
         
-      </main>
+      </div>
     </div>
-  </div>
+  </main>
 
     <!--script>initMap()</script-->
 	<!-- Footer -->
